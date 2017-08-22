@@ -17,14 +17,14 @@ class col:
 
 os.system('clear')
 
-header = col.g + 'Geweva Plotter ' + col.x + col.d + '[2017 nodist 1, Aug 10 2017]\n\n' + col.x + \
+header = col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a2]\n\n' + col.x + \
 col.c + 'Please select an operation:\n' + col.x + \
 col.y + '    [0] Graph one month of data\n' + col.x + \
 col.y + '    [1] Inject new data\n\n' + col.x + '>>> '
 
 def twrite(tspace):
     for char in tspace:
-        time.sleep(0.015)
+        time.sleep(0.005)
         sys.stdout.write(char)
         sys.stdout.flush()
 
