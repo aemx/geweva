@@ -17,10 +17,11 @@ class col:
 
 os.system('clear')
 
-header = col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a2]\n\n' + col.x + \
+header = col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a3]\n\n' + col.x + \
 col.c + 'Please select an operation:\n' + col.x + \
 col.y + '    [0] Graph one month of data\n' + col.x + \
-col.y + '    [1] Inject new data\n\n' + col.x + '>>> '
+col.y + '    [1] Inject new data\n' + col.x + \
+col.y + '    [9] Exit Geweva Plotter\n\n' + col.x + '>>> '
 
 def twrite(tspace):
     for char in tspace:
@@ -32,8 +33,10 @@ twrite(header)
 selectop = input()
 
 try:
-    seltf = 0 <= int(selectop) <= 1
-    if seltf == False:
+    selint = int(selectop)
+    if (selint == 0) or (selint == 1) or (selint == 9):
+        pass
+    if selint == False:
         raise ValueError()
         
 except ValueError:
@@ -234,3 +237,5 @@ elif int(selectop) == 1:
             fw.close()
     except:
         pass
+elif int(selectop) == 9:
+    twrite(col.y + 'Exiting...\n' + col.x)
