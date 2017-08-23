@@ -17,7 +17,7 @@ class col:
 
 os.system('clear')
 
-header = col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a3]\n\n' + col.x + \
+header = col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a4]\n\n' + col.x + \
 col.c + 'Please select an operation:\n' + col.x + \
 col.y + '    [0] Graph one month of data\n' + col.x + \
 col.y + '    [1] Inject new data\n' + col.x + \
@@ -34,16 +34,16 @@ selectop = input()
 
 try:
     selint = int(selectop)
-    if (selint == 0) or (selint == 1) or (selint == 9):
+    if (selint is 0) or (selint is 1) or (selint is 9):
         pass
-    if selint == False:
+    if selint is False:
         raise ValueError()
         
 except ValueError:
     twrite(col.r + '\nError: Incorrect operation specified.\n\n' + col.x)
     sys.exit()
 
-if int(selectop) == 0:
+if int(selectop) is 0:
     twrite(col.y + '\nPlease enter a month to be graphed: ' + col.x)
     mraw = input()
 
@@ -143,7 +143,7 @@ if int(selectop) == 0:
     except IOError:
         twrite(col.r + '\nError: The specified Geweva log was not found.\n\n' + col.x)
 
-elif int(selectop) == 1:
+elif int(selectop) is 1:
     twrite(col.y + '\nPlease enter a month to inject data: ' + col.x)
     mraw = input()
 
@@ -237,5 +237,5 @@ elif int(selectop) == 1:
             fw.close()
     except:
         pass
-elif int(selectop) == 9:
-    twrite(col.y + 'Exiting...\n' + col.x)
+elif int(selectop) is 9:
+    twrite(col.r + '\nExiting...\n\n' + col.x)
