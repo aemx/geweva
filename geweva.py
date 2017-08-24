@@ -17,11 +17,11 @@ class col:
 
 os.system('clear')
 
-header = col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a4]\n\n' + col.x + \
+header = col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a5]\n\n' + col.x + \
 col.c + 'Please select an operation:\n' + col.x + \
 col.y + '    [0] Graph one month of data\n' + col.x + \
 col.y + '    [1] Inject new data\n' + col.x + \
-col.y + '    [9] Exit Geweva Plotter\n\n' + col.x + '>>> '
+col.y + '    [9] Exit Geweva Plotter\n\n' + col.x
 
 def twrite(tspace):
     for char in tspace:
@@ -30,20 +30,18 @@ def twrite(tspace):
         sys.stdout.flush()
 
 twrite(header)
-selectop = input()
 
-try:
-    selint = int(selectop)
-    if (selint is 0) or (selint is 1) or (selint is 9):
-        pass
-    if selint is False:
-        raise ValueError()
-        
-except ValueError:
-    twrite(col.r + '\nError: Incorrect operation specified.\n\n' + col.x)
-    sys.exit()
+while True:
+    try:
+        twrite('>>> ')
+        selectop = int(input())
+    except ValueError or (selectop is not [0, 1, 9]):
+        twrite(col.r + '\nError: Incorrect operation specified. Please retry.\n\n' + col.x)
+        continue
+    else:
+        break
 
-if int(selectop) is 0:
+if selectop is 0:
     twrite(col.y + '\nPlease enter a month to be graphed: ' + col.x)
     mraw = input()
 
@@ -132,18 +130,10 @@ if int(selectop) is 0:
         plt.setp(graleg.texts, fontname = 'Ubuntu Mono', fontsize = 16)
         plt.show()
 
-        # Store by week rather than month   [0.1.0]
-        # X-axis time                       [0.2.0]
-        # Preferences/config                [0.2.1]
-            # Weight loss per week
-            # Uncertainty range
-            # Starting weight
-        # Enter range                       [0.2.2]
-
     except IOError:
         twrite(col.r + '\nError: The specified Geweva log was not found.\n\n' + col.x)
 
-elif int(selectop) is 1:
+elif selectop is 1:
     twrite(col.y + '\nPlease enter a month to inject data: ' + col.x)
     mraw = input()
 
@@ -237,5 +227,6 @@ elif int(selectop) is 1:
             fw.close()
     except:
         pass
-elif int(selectop) is 9:
+
+elif selectop is 9:
     twrite(col.r + '\nExiting...\n\n' + col.x)
