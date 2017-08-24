@@ -23,7 +23,7 @@ def twrite(tspace):
         sys.stdout.write(char)
         sys.stdout.flush()
 
-twrite(col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a6]\n\n' + col.x + \
+twrite(col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a7]\n\n' + col.x + \
 col.c + 'Please select an operation:\n' + col.x + \
 col.y + '    [0] Graph one month of data\n' + col.x + \
 col.y + '    [1] Inject new data\n' + col.x + \
@@ -76,8 +76,7 @@ if selectop is 0:
     ydata = np.array(alldata[1].split('  '), dtype=float)
 
     if len(ydata) < 2:
-        twrite(col.r + '\nInsufficient information for graphing.' + \
-        'Please add more data before attempting to produce a graph.\n\n' + col.x)
+        twrite(col.r + '\nInsufficient information for graphing. Please add more data before attempting to produce a graph.\n\n' + col.x)
         sys.exit()
 
     xhi = np.amax(xdata)
@@ -141,98 +140,98 @@ if selectop is 0:
 
 elif selectop is 1:
     twrite(col.y + '\nPlease enter a month to inject data: ' + col.x)
-    mraw = input()
-
-    try:
-        mint = int(mraw)
-        def find_file(name):
-            for files in os.getcwd():
-                glog = str(name) + 'vals.log'
-                return str(name)
-
-    except ValueError:
-        twrite(col.r + '\nError: Input was not an integer.\n\n' + col.x)
-        sys.exit()
-
-    try:
-        mthtf = 1 <= mint <= 12
-        if mthtf == False:
-            raise ValueError()
-
-    except ValueError:
-        twrite(col.r + '\nError: Input was not a valid integer.\n\n' + col.x)
-        sys.exit()
-
-    try:
-        mstr = find_file(mint)
-        fto = mstr + 'vals.log'
-        os.path.isfile(fto)
-        fr = open(fto, 'r')
-        alldata = fr.read().splitlines()
-        fr.close()
-
-    except IOError:
-        twrite(col.y + '\nThe specified Geweva log was not found. ' + col.x + \
-        col.c + 'Creating new file')
-        time.sleep(0.5)
-        twrite('.')
-        time.sleep(0.7)
-        twrite('.')
-        time.sleep(0.7)
-        twrite('.\n' + col.x)
-
-        fwp = open(fto, 'w+')
-        fwp.close()
-        time.sleep(0.5)
-
-        twrite(col.g + '\nSuccess! ' + fto + ' was created.\n' + col.x)
-
-    try:
-        twrite(col.y + '\nEnter floating-point time value: ' + col.x)
-        xapraw = input()
-
+    
+    while True:
         try:
-            xapflo = float(xapraw)
+            mint = int(input())
+            def find_file(name):
+                for files in os.getcwd():
+                    glog = str(name) + 'vals.log'
+                    return str(name)
 
         except ValueError:
-            twrite(col.r + '\nError: The specified value was not floating-point.\n\n' + col.x)
-            sys.exit()
+            twrite(col.r + '\nInput was not an integer. Please retry: ' + col.x)
+            continue
 
-        twrite(col.y + '\nEnter floating-point weight value: ' + col.x)
-        yapraw = input()
-
+        if not (1 <= mint <= 12):
+            twrite(col.r + '\nError: Input was not a valid integer. Please retry: ' + col.x)
+            continue
+        
         try:
-            yapflo = float(yapraw)
+            mstr = find_file(mint)
+            fto = mstr + 'vals.log'
+            os.path.isfile(fto)
+            fr = open(fto, 'r')
 
-        except ValueError:
-            twrite(col.r + '\nError: The specified value was not floating-point.\n\n' + col.x)
-            sys.exit()
+        except IOError:
+            twrite(col.y + '\nThe specified Geweva log was not found. ' + col.x + \
+            col.c + 'Creating new file')
+            time.sleep(0.5)
+            twrite('.')
+            time.sleep(0.7)
+            twrite('.')
+            time.sleep(0.7)
+            twrite('.\n' + col.x)
 
-        if os.stat(fto).st_size > 0:
-            xdapd = ''.join(alldata[0]) + '   ' + str(xapflo) + '\n'
-            ydapd = ''.join(alldata[1]) + '   ' + str(yapflo)
-            
-            twrite(col.g + '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+            fwp = open(fto, 'w+')
+            fwp.close()
+            time.sleep(0.5)
 
-            fw = open(fto, 'w')
-            fw.truncate()
-            fw.write(xdapd)
-            fw.write(ydapd)
-            fw.close()
+            twrite(col.g + '\nSuccess! ' + fto + ' was created.\n' + col.x)
+            break
+        
+        else:
+            break
 
-        elif os.stat(fto).st_size == 0:
-            xdapd = str(xapflo) + '\n'
-            ydapd = str(yapflo)
-            
-            twrite(col.g + '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+    mstr = find_file(mint)
+    fto = mstr + 'vals.log'
+    os.path.isfile(fto)
+    fr = open(fto, 'r')
+    alldata = fr.read().splitlines()
+    fr.close()
+    twrite(col.y + '\nEnter floating-point time value: ' + col.x)
+    xapraw = input()
 
-            fw = open(fto, 'w')
-            fw.truncate()
-            fw.write(xdapd)
-            fw.write(ydapd)
-            fw.close()
-    except:
-        pass
+    try:
+        xapflo = float(xapraw)
+
+    except ValueError:
+        twrite(col.r + '\nError: The specified value was not floating-point.\n\n' + col.x)
+        sys.exit()
+
+    twrite(col.y + '\nEnter floating-point weight value: ' + col.x)
+    yapraw = input()
+
+    try:
+        yapflo = float(yapraw)
+
+    except ValueError:
+        twrite(col.r + '\nError: The specified value was not floating-point.\n\n' + col.x)
+        sys.exit()
+
+    if os.stat(fto).st_size > 0:
+        xdapd = ''.join(alldata[0]) + '   ' + str(xapflo) + '\n'
+        ydapd = ''.join(alldata[1]) + '   ' + str(yapflo)
+        
+        twrite(col.g + '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+
+        fw = open(fto, 'w')
+        fw.truncate()
+        fw.write(xdapd)
+        fw.write(ydapd)
+        fw.close()
+
+    elif os.stat(fto).st_size == 0:
+        xdapd = str(xapflo) + '\n'
+        ydapd = str(yapflo)
+        
+        twrite(col.g + '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+
+        fw = open(fto, 'w')
+        fw.truncate()
+        fw.write(xdapd)
+        fw.write(ydapd)
+        fw.close()
 
 elif selectop is 9:
     twrite(col.r + '\nExiting...\n\n' + col.x)
