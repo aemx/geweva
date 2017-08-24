@@ -23,7 +23,7 @@ def twrite(tspace):
         sys.stdout.write(char)
         sys.stdout.flush()
 
-twrite(col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a8]\n\n' + col.x + \
+twrite(col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a9]\n\n' + col.x + \
 col.c + 'Please select an operation:\n' + col.x + \
 col.y + '    [0] Graph one month of data\n' + col.x + \
 col.y + '    [1] Inject new data\n' + col.x + \
@@ -154,7 +154,7 @@ elif selectop is 1:
             continue
 
         if not (1 <= mint <= 12):
-            twrite(col.r + '\nError: Input was not a valid integer. Please retry: ' + col.x)
+            twrite(col.r + '\nInput was not a valid integer. Please retry: ' + col.x)
             continue
         
         try:
@@ -204,25 +204,36 @@ elif selectop is 1:
     fr = open(fto, 'r')
     alldata = fr.read().splitlines()
     fr.close()
-    twrite(col.y + '\nEnter floating-point time value: ' + col.x)
-    xapraw = input()
 
-    try:
-        xapflo = float(xapraw)
+    twrite(col.y + '\nEnter a numerical time value: ' + col.x)
 
-    except ValueError:
-        twrite(col.r + '\nError: The specified value was not floating-point.\n\n' + col.x)
-        sys.exit()
+    while True:
+        xapraw = input()
 
-    twrite(col.y + '\nEnter floating-point weight value: ' + col.x)
-    yapraw = input()
+        try:
+            xapflo = float(xapraw)
 
-    try:
-        yapflo = float(yapraw)
+        except ValueError:
+            twrite(col.r + '\nThe specified value was not valid. Please retry: ' + col.x)
+            continue
 
-    except ValueError:
-        twrite(col.r + '\nError: The specified value was not floating-point.\n\n' + col.x)
-        sys.exit()
+        else:
+            break
+
+    twrite(col.y + '\nEnter a numerical weight value: ' + col.x)
+
+    while True:
+        yapraw = input()
+
+        try:
+            yapflo = float(yapraw)
+
+        except ValueError:
+            twrite(col.r + '\nThe specified value was not valid. Please retry: ' + col.x)
+            continue
+
+        else:
+            break
 
     if os.stat(fto).st_size > 0:
         xdapd = ''.join(alldata[0]) + '   ' + str(xapflo) + '\n'
