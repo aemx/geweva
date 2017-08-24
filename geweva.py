@@ -23,7 +23,7 @@ def twrite(tspace):
         sys.stdout.write(char)
         sys.stdout.flush()
 
-twrite(col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a7]\n\n' + col.x + \
+twrite(col.g + 'Geweva Plotter ' + col.d + '[0.0.1-a8]\n\n' + col.x + \
 col.c + 'Please select an operation:\n' + col.x + \
 col.y + '    [0] Graph one month of data\n' + col.x + \
 col.y + '    [1] Inject new data\n' + col.x + \
@@ -164,22 +164,37 @@ elif selectop is 1:
             fr = open(fto, 'r')
 
         except IOError:
-            twrite(col.y + '\nThe specified Geweva log was not found. ' + col.x + \
-            col.c + 'Creating new file')
-            time.sleep(0.5)
-            twrite('.')
-            time.sleep(0.7)
-            twrite('.')
-            time.sleep(0.7)
-            twrite('.\n' + col.x)
+            while True:
+                month = cal.month_name[mint]
+                twrite(col.y + '\nThe specified Geweva log was not found.\n' + col.x + \
+                col.c + 'Would you like to create a new log for the month of ' + month + '? [Y/n] ' + col.x)
+                prompt = input()
 
-            fwp = open(fto, 'w+')
-            fwp.close()
-            time.sleep(0.5)
+                if prompt.lower() in ('yes', 'ye', 'y', ''):
+                    twrite(col.c + '\nCreating new file')
+                    time.sleep(0.5)
+                    twrite('.')
+                    time.sleep(0.7)
+                    twrite('.')
+                    time.sleep(0.7)
+                    twrite('.\n' + col.x)
 
-            twrite(col.g + '\nSuccess! ' + fto + ' was created.\n' + col.x)
+                    fwp = open(fto, 'w+')
+                    fwp.close()
+                    time.sleep(0.5)
+
+                    twrite(col.g + '\nSuccess! ' + fto + ' was created.\n' + col.x)
+                    break
+
+                elif prompt.lower() in ('no', 'n'):
+                    twrite(col.r + '\nExiting...\n\n' + col.x)
+                    sys.exit()
+                
+                else:
+                    twrite(col.r + '\nPlease respond with "yes/y" or "no/n".\n' + col.x)
+                    continue
             break
-        
+
         else:
             break
 
