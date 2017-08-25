@@ -23,7 +23,7 @@ def twrite(tspace):
         sys.stdout.write(char)
         sys.stdout.flush()
 
-twrite(col.g + 'Geweva Plotter ' + col.d + '[0.0.1-b1]\n\n' + col.x + \
+twrite(col.g + 'Geweva Plotter ' + col.d + '0.0.1\n\n' + col.x + \
 col.c + 'Please select an operation:\n' + col.x + \
 col.y + '    [0] Graph one month of data\n' + col.x + \
 col.y + '    [1] Inject new data\n' + col.x + \
