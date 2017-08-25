@@ -37,6 +37,7 @@ f.close()
 
 xdata = np.array(alldata[0].split('  '), dtype=float)
 ydata = np.array(alldata[1].split('  '), dtype=float)
+fdata = np.array([xdata, ydata])
 
 if len(ydata) < 2:
     twrite(col.r + '\nInsufficient information for graphing.' + \
@@ -51,18 +52,17 @@ ylo = np.amin(ydata) - 2.5
 month = cal.month_name[mint]
 maxis = cal.monthrange(2017, mint)[1]
 
-xply = np.polyfit(xdata, ydata, xhi)
-yply = np.poly1d(xply)
 xlin = np.polyfit(xdata, ydata, 1)
 ylin = np.poly1d(xlin)
 
-xnew = np.linspace(xlo, xhi, 300)
+xcur = np.linspace(xlo, xhi, 5000)
+ycur = eval('-1*np.sin(2*np.pi*xcur)' + '-1*xcur/5 + 200')
+
 xalt = np.linspace(xlo, xhi, 50)
-ynew = yply(xnew)
 yalt = ylin(xalt)
 
-blinx = np.linspace(xlo, maxis, 50)
-bliny = eval('-5*blinx/19 + 203')
+blinx = np.linspace(xlo, maxis, 500)
+bliny = eval('-1*blinx/5 + 200')
 
 if np.amax(bliny) + 2.5 > yhi:
     yhighest = np.amax(bliny) + 2.5
@@ -85,24 +85,24 @@ time.sleep(0.7)
 twrite('.\n\n' + col.x)
 time.sleep(0.5)
 
-# dates = mcal.date2num('2017-' + mstr + '-1', '2017-' + mstr + '-' + str(maxis))
-
 fig, graph = plt.subplots()
 graph.fill_between(blinx, bliny - 2.5, bliny + 2.5, color = 'b', alpha = 0.05)
 lideal, = graph.plot(blinx, bliny, 'b')
-lamove, = graph.plot(xnew, ynew, 'g')
+lamove, = graph.plot(xcur, ycur, 'g')
 lalini, = graph.plot(xalt, yalt, 'g--')
 graph.plot(xdata, ydata, 'go', markersize = 7, alpha = 0.15)
-
 plt.axis([0, maxis, ylowest, yhighest])
+
 graph.set_title('Weight Loss Over ' + month, fontname = 'Ubuntu Mono',
 fontsize = 32, fontweight = 'bold')
 graph.set_xlabel('Time', fontname = 'Ubuntu Mono', fontsize = 16)
 graph.set_ylabel('Weight (lb.)', fontname = 'Ubuntu Mono', fontsize = 16)
+
 graleg = graph.legend((lideal, lamove, lalini),
 ('Ideal weight, linear average',
 'Actual weight, moving average',
 'Actual weight, linear average'))
+
 plt.setp(graleg.texts, fontname = 'Ubuntu Mono', fontsize = 16)
 plt.show()
 print()
