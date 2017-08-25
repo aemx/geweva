@@ -14,7 +14,8 @@ while True:
                 return str(name)
 
     except ValueError:
-        twrite(col.r + '\nInput was not an integer. Please retry: ' + col.x)
+        twrite(col.r + \
+        '\nInput was not an integer. Please retry: ' + col.x)
         continue
 
     try:
@@ -24,7 +25,8 @@ while True:
         f = open(fto, 'r')
 
     except IOError:
-        twrite(col.r + '\nThe specified Geweva log was not found. Please retry: ' + col.x)
+        twrite(col.r + \
+        '\nThe specified log was not found. Please retry: ' + col.x)
         continue
 
     else:
@@ -37,7 +39,8 @@ xdata = np.array(alldata[0].split('  '), dtype=float)
 ydata = np.array(alldata[1].split('  '), dtype=float)
 
 if len(ydata) < 2:
-    twrite(col.r + '\nInsufficient information for graphing. Please add more data before attempting to produce a graph.\n\n' + col.x)
+    twrite(col.r + '\nInsufficient information for graphing.' + \
+    'Please add more data before attempting to produce a graph.\n\n' + col.x)
     sys.exit()
 
 xhi = np.amax(xdata)
@@ -92,10 +95,14 @@ lalini, = graph.plot(xalt, yalt, 'g--')
 graph.plot(xdata, ydata, 'go', markersize = 7, alpha = 0.15)
 
 plt.axis([0, maxis, ylowest, yhighest])
-graph.set_title('Weight Loss Over ' + month, fontname = 'Ubuntu Mono', fontsize = 32, fontweight = 'bold')
+graph.set_title('Weight Loss Over ' + month, fontname = 'Ubuntu Mono',
+fontsize = 32, fontweight = 'bold')
 graph.set_xlabel('Time', fontname = 'Ubuntu Mono', fontsize = 16)
 graph.set_ylabel('Weight (lb.)', fontname = 'Ubuntu Mono', fontsize = 16)
-graleg = graph.legend((lideal, lamove, lalini), ('Ideal weight, linear average', 'Actual weight, moving average', 'Actual weight, linear average'))
+graleg = graph.legend((lideal, lamove, lalini),
+('Ideal weight, linear average',
+'Actual weight, moving average',
+'Actual weight, linear average'))
 plt.setp(graleg.texts, fontname = 'Ubuntu Mono', fontsize = 16)
 plt.show()
 print()

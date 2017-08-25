@@ -19,7 +19,7 @@ def twrite(tspace):
         sys.stdout.write(char)
         sys.stdout.flush()
 
-twrite(col.g + 'Geweva Plotter ' + col.d + '0.0.2-b1\n\n' + col.x)
+twrite(col.g + 'Geweva Plotter ' + col.d + '0.0.2\n\n' + col.x)
 
 header = col.c + 'Please select an operation:\n' + col.x + \
 col.y + '    [0] Graph one month of data\n' + col.x + \
@@ -34,7 +34,8 @@ while True:
         selectop = int(input())
 
     except ValueError:
-        twrite(col.r + '\nIncorrect operation specified. Please retry.\n' + col.x)
+        twrite(col.r + \
+        '\nIncorrect operation specified. Please retry.\n' + col.x)
         continue
 
     if selectop is 0:
@@ -54,5 +55,6 @@ while True:
         sys.exit()
     
     else:
-        twrite(col.r + '\nIncorrect operation specified. Please retry.\n' + col.x)
+        twrite(col.r + \
+        '\nIncorrect operation specified. Please retry.\n' + col.x)
         continue

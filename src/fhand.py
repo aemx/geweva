@@ -13,7 +13,8 @@ while True:
         continue
 
     if not (1 <= mint <= 12):
-        twrite(col.r + '\nInput was not a valid integer. Please retry: ' + col.x)
+        twrite(col.r + \
+        '\nInput was not a valid integer. Please retry: ' + col.x)
         continue
     
     try:
@@ -26,7 +27,9 @@ while True:
         twrite(col.y + '\nThe specified Geweva log was not found.\n' + col.x)
         while True:
             month = cal.month_name[mint]
-            twrite(col.c + 'Would you like to create a new log for the month of ' + month + '? [Y/n] ' + col.x)
+            twrite(col.c + \
+            'Would you like to create a new log for the month of ' + \
+            month + '? [Y/n] ' + col.x)
             prompt = input()
 
             if prompt.lower() in ('yes', 'ye', 'y', ''):
@@ -50,7 +53,8 @@ while True:
                 sys.exit()
             
             else:
-                twrite(col.r + '\nPlease respond with "yes/y" or "no/n".\n\n' + col.x)
+                twrite(col.r + \
+                '\nPlease respond with "yes/y" or "no/n".\n\n' + col.x)
                 continue
         break
 
@@ -73,7 +77,8 @@ while True:
         xapflo = float(xapraw)
 
     except ValueError:
-        twrite(col.r + '\nThe specified value was not valid. Please retry: ' + col.x)
+        twrite(col.r + \
+        '\nThe specified value was not valid. Please retry: ' + col.x)
         continue
 
     else:
@@ -88,7 +93,8 @@ while True:
         yapflo = float(yapraw)
 
     except ValueError:
-        twrite(col.r + '\nThe specified value was not valid. Please retry: ' + col.x)
+        twrite(col.r + \
+        '\nThe specified value was not valid. Please retry: ' + col.x)
         continue
 
     else:
@@ -98,7 +104,8 @@ if os.stat(fto).st_size > 0:
     xdapd = ''.join(alldata[0]) + '   ' + str(xapflo) + '\n'
     ydapd = ''.join(alldata[1]) + '   ' + str(yapflo)
     
-    twrite(col.g + '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+    twrite(col.g + \
+    '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
 
     fw = open(fto, 'w')
     fw.truncate()
@@ -110,7 +117,8 @@ elif os.stat(fto).st_size == 0:
     xdapd = str(xapflo) + '\n'
     ydapd = str(yapflo)
     
-    twrite(col.g + '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+    twrite(col.g + \
+    '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
 
     fw = open(fto, 'w')
     fw.truncate()
