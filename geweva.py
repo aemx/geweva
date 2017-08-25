@@ -19,11 +19,14 @@ def twrite(tspace):
         sys.stdout.write(char)
         sys.stdout.flush()
 
-twrite(col.g + 'Geweva Plotter ' + col.d + '0.0.2-a2\n\n' + col.x + \
-col.c + 'Please select an operation:\n' + col.x + \
+twrite(col.g + 'Geweva Plotter ' + col.d + '0.0.2-b1\n\n' + col.x)
+
+header = col.c + 'Please select an operation:\n' + col.x + \
 col.y + '    [0] Graph one month of data\n' + col.x + \
 col.y + '    [1] Inject new data\n' + col.x + \
-col.y + '    [9] Exit Geweva Plotter\n\n' + col.x)
+col.y + '    [9] Exit Geweva Plotter\n' + col.x
+
+twrite(header)
 
 while True:
     try:
@@ -36,9 +39,15 @@ while True:
 
     if selectop is 0:
         exec(open('src/plot.py').read())
+        os.system('clear')
+        twrite(header)
+        continue
 
     elif selectop is 1:
         exec(open('src/fhand.py').read())
+        os.system('clear')
+        twrite(header)
+        continue
 
     elif selectop is 9:
         twrite(col.r + '\nExiting...\n\n' + col.x)

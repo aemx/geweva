@@ -99,4 +99,3 @@ graleg = graph.legend((lideal, lamove, lalini), ('Ideal weight, linear average',
 plt.setp(graleg.texts, fontname = 'Ubuntu Mono', fontsize = 16)
 plt.show()
 print()
-sys.exit()

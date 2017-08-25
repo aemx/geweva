@@ -117,4 +117,3 @@ elif os.stat(fto).st_size == 0:
     fw.write(xdapd)
     fw.write(ydapd)
     fw.close()
-sys.exit()
