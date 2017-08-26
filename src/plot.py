@@ -44,16 +44,13 @@ if len(ydata) < 2:
     'Please add more data before attempting to produce a graph.\n\n' + col.x)
     sys.exit()
 
-xhi = np.amax(xdata)
-xlo = np.amin(xdata)
-yhi = np.amax(ydata) + 2.5
-ylo = np.amin(ydata) - 2.5
+xhi, xlo = np.amax(xdata), np.amin(xdata)
+yhi, ylo = np.amax(ydata) + 2.5, np.amin(ydata) - 2.5
 
 month = cal.month_name[mint]
 maxis = cal.monthrange(2017, mint)[1]
 
-mi = -1/5
-w = 200
+mi, w = -1/5, 200
 
 meven = (np.polyfit(xdata[0::2], ydata[0::2], 1))[0]
 modd = (np.polyfit(xdata[1::2], ydata[1::2], 1))[0]
@@ -66,14 +63,12 @@ for p in range(0, corpod, 2):
     preamp.append(res)
 amp = np.mean(preamp) / 2
 
-blinx = np.linspace(xlo, maxis)
-bliny = eval('mi*blinx + w')
+blinx, bliny = np.linspace(xlo, maxis), eval('mi*blinx + w')
 
 xcur = np.linspace(xlo, xhi, 5000)
 ycur = eval('-amp*np.sin(2*np.pi*xcur) + (ma*xcur + w)')
 
-xlin = np.linspace(xlo, xhi, 50)
-ylin = eval('ma*xlin + w')
+xlin, ylin = np.linspace(xlo, xhi, 50), eval('ma*xlin + w')
 
 if np.amax(bliny) + 2.5 > yhi:
     yhighest = np.amax(bliny) + 2.5
