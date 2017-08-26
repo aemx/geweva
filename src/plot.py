@@ -52,17 +52,23 @@ ylo = np.amin(ydata) - 2.5
 month = cal.month_name[mint]
 maxis = cal.monthrange(2017, mint)[1]
 
-xlin = np.polyfit(xdata, ydata, 1)
-ylin = np.poly1d(xlin)
+mi = -1/5   # Slope, ideal
+sw = 200    # Starting weight
+
+meven = (np.polyfit(xdata[0::2], ydata[0::2], 1))[0]
+modd = (np.polyfit(xdata[1::2], ydata[1::2], 1))[0]
+ma = np.mean([meven, modd])
+
+# Calculate the mean of the increase in body weight for one day. This will be 'amp'. (b2?)
+
+blinx = np.linspace(xlo, maxis)
+bliny = eval('mi*blinx + sw')
 
 xcur = np.linspace(xlo, xhi, 5000)
-ycur = eval('-1*np.sin(2*np.pi*xcur)' + '-1*xcur/5 + 200')
+ycur = eval('-1*np.sin(2*np.pi*xcur) + (ma*xcur + sw)')
 
-xalt = np.linspace(xlo, xhi, 50)
-yalt = ylin(xalt)
-
-blinx = np.linspace(xlo, maxis, 500)
-bliny = eval('-1*blinx/5 + 200')
+xlin = np.linspace(xlo, xhi, 50)
+ylin = eval('ma*xlin + sw')
 
 if np.amax(bliny) + 2.5 > yhi:
     yhighest = np.amax(bliny) + 2.5
@@ -89,7 +95,7 @@ fig, graph = plt.subplots()
 graph.fill_between(blinx, bliny - 2.5, bliny + 2.5, color = 'b', alpha = 0.05)
 lideal, = graph.plot(blinx, bliny, 'b')
 lamove, = graph.plot(xcur, ycur, 'g')
-lalini, = graph.plot(xalt, yalt, 'g--')
+lalini, = graph.plot(xlin, ylin, 'g--')
 graph.plot(xdata, ydata, 'go', markersize = 7, alpha = 0.15)
 plt.axis([0, maxis, ylowest, yhighest])
 
