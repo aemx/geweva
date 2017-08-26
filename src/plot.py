@@ -52,23 +52,28 @@ ylo = np.amin(ydata) - 2.5
 month = cal.month_name[mint]
 maxis = cal.monthrange(2017, mint)[1]
 
-mi = -1/5   # Slope, ideal
-sw = 200    # Starting weight
+mi = -1/5
+w = 200
 
 meven = (np.polyfit(xdata[0::2], ydata[0::2], 1))[0]
 modd = (np.polyfit(xdata[1::2], ydata[1::2], 1))[0]
 ma = np.mean([meven, modd])
 
-# Calculate the mean of the increase in body weight for one day. This will be 'amp'. (b2?)
+corpod = len(ydata) - 1
+preamp = []
+for p in range(0, corpod, 2):
+    res = ydata[p + 1] - ydata[p]
+    preamp.append(res)
+amp = np.mean(preamp) / 2
 
 blinx = np.linspace(xlo, maxis)
-bliny = eval('mi*blinx + sw')
+bliny = eval('mi*blinx + w')
 
 xcur = np.linspace(xlo, xhi, 5000)
-ycur = eval('-1*np.sin(2*np.pi*xcur) + (ma*xcur + sw)')
+ycur = eval('-amp*np.sin(2*np.pi*xcur) + (ma*xcur + w)')
 
 xlin = np.linspace(xlo, xhi, 50)
-ylin = eval('ma*xlin + sw')
+ylin = eval('ma*xlin + w')
 
 if np.amax(bliny) + 2.5 > yhi:
     yhighest = np.amax(bliny) + 2.5
