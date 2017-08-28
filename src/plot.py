@@ -3,30 +3,24 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns; sns.set()
 
-twrite(col.y + '\nPlease enter a month to be graphed: ' + col.x)
+os.chdir('logs')
+twrite(col.y + '\nPlease enter a year and week to be graphed [YYYY WW]: ' + col.x)
 
 while True:
     try:
-        mint = int(input())
-        def find_file(name):
+        raw = input()
+        year, week = raw.split(' ')
+        def find_file(y, w):
             for files in os.getcwd():
-                glog = str(name) + 'vals.log'
-                return str(name)
+                glog = y + '-W' + w + 'vals.log'
+                return glog
+        wstr = find_file(year, week)
+        os.path.isfile(wstr)
+        f = open(wstr, 'r')
 
-    except ValueError:
+    except (ValueError, IOError):
         twrite(col.r + \
-        '\nInput was not an integer. Please retry: ' + col.x)
-        continue
-
-    try:
-        mstr = find_file(mint)
-        fto = mstr + 'vals.log'
-        os.path.isfile(fto)
-        f = open(fto, 'r')
-
-    except IOError:
-        twrite(col.r + \
-        '\nThe specified log was not found. Please retry: ' + col.x)
+        '\nThe specified log was not found. Please retry using [YYYY WW] format: ' + col.x)
         continue
 
     else:
@@ -34,10 +28,10 @@ while True:
 
 alldata = f.read().splitlines()
 f.close()
+os.chdir('..')
 
 xdata = np.array(alldata[0].split('  '), dtype=float)
 ydata = np.array(alldata[1].split('  '), dtype=float)
-fdata = np.array([xdata, ydata])
 
 if len(ydata) < 2:
     twrite(col.r + '\nInsufficient information for graphing.' + \
@@ -46,9 +40,6 @@ if len(ydata) < 2:
 
 xhi, xlo = np.amax(xdata), np.amin(xdata)
 yhi, ylo = np.amax(ydata) + 2.5, np.amin(ydata) - 2.5
-
-month = cal.month_name[mint]
-maxis = cal.monthrange(2017, mint)[1]
 
 mi, w = -1/5, 200
 
@@ -63,12 +54,14 @@ for p in range(0, corpod, 2):
     preamp.append(res)
 amp = np.mean(preamp) / 2
 
-blinx, bliny = np.linspace(xlo, maxis), eval('mi*blinx + w')
+blinx = np.linspace(0, 7)
+bliny = eval('mi*blinx + w')
 
-xcur = np.linspace(xlo, xhi, 5000)
+xcur = np.linspace(0, xhi, 5000)
 ycur = eval('-amp*np.sin(2*np.pi*xcur) + (ma*xcur + w)')
 
-xlin, ylin = np.linspace(xlo, xhi, 50), eval('ma*xlin + w')
+xlin = np.linspace(0, 7, 50)
+ylin = eval('ma*xlin + w')
 
 if np.amax(bliny) + 2.5 > yhi:
     yhighest = np.amax(bliny) + 2.5
@@ -97,18 +90,18 @@ lideal, = graph.plot(blinx, bliny, 'b')
 lamove, = graph.plot(xcur, ycur, 'g')
 lalini, = graph.plot(xlin, ylin, 'g--')
 graph.plot(xdata, ydata, 'go', markersize = 7, alpha = 0.15)
-plt.axis([0, maxis, ylowest, yhighest])
+plt.axis([0, 7, ylowest, yhighest])
 
-graph.set_title('Weight Loss Over ' + month, fontname = 'Ubuntu Mono',
-fontsize = 32, fontweight = 'bold')
-graph.set_xlabel('Time', fontname = 'Ubuntu Mono', fontsize = 16)
-graph.set_ylabel('Weight (lb.)', fontname = 'Ubuntu Mono', fontsize = 16)
+graph.set_title('Weight Loss, ' + year + '-W' + week,
+fontsize = 28, fontweight = 'bold')
+graph.set_xlabel('Time', fontsize = 14)
+graph.set_ylabel('Weight (lb.)', fontsize = 14)
 
 graleg = graph.legend((lideal, lamove, lalini),
 ('Ideal weight, linear average',
 'Actual weight, moving average',
 'Actual weight, linear average'))
 
-plt.setp(graleg.texts, fontname = 'Ubuntu Mono', fontsize = 16)
+plt.setp(graleg.texts, fontsize = 14)
 plt.show()
 print()
