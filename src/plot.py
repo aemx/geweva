@@ -10,12 +10,20 @@ twrite(col.y + '\nPlease enter a year and week to be graphed [YYYY WW]: ' + col.
 while True:
     try:
         raw = input()
-        year, week = raw.split(' ')
+        rawyear, rawweek = raw.split(' ')
+        truyear, truweek = rawyear.lstrip('0'), rawweek.lstrip('0')
+
+        if len(truweek) == 1:
+            revweek = '0' + truweek
+
+        else:
+            revweek = truweek
+
         def find_file(y, w):
             for files in os.getcwd():
                 glog = y + '-W' + w + 'vals.json'
                 return glog
-        wstr = find_file(year, week)
+        wstr = find_file(truyear, revweek)
         os.path.isfile(wstr)
         f = json.load(open(wstr))
 
@@ -91,10 +99,10 @@ lalini, = graph.plot(xlin, ylin, 'g--')
 graph.plot(xdata, ydata, 'go', markersize = 7, alpha = 0.15)
 plt.axis([0, 7, ylowest, yhighest])
 
-graph.set_title('Weight Loss, ' + year + '-W' + week,
-fontsize = 28, fontweight = 'bold')
-graph.set_xlabel('Time', fontsize = 14)
-graph.set_ylabel('Weight (lb.)', fontsize = 14)
+graph.set_title('Weight loss for week ' + truweek + ', ' + truyear,
+fontsize = 32, fontweight = 'bold')
+graph.set_xlabel('Time', fontsize = 16)
+graph.set_ylabel('Weight (lb.)', fontsize = 16)
 
 graleg = graph.legend((lideal, lamove, lalini),
 ('Ideal weight, linear average',
@@ -102,5 +110,8 @@ graleg = graph.legend((lideal, lamove, lalini),
 'Actual weight, linear average'))
 
 plt.setp(graleg.texts, fontsize = 14)
+mng = plt.get_current_fig_manager()
+mng.window.showMaximized()
+mng.set_window_title(truyear + '-W' + revweek)
 plt.show()
 print()

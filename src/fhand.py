@@ -1,5 +1,4 @@
 import json
-from pprint import pprint
 
 os.chdir('logs')
 twrite(col.y + '\nPlease enter a year and week to inject data [YYYY WW]: ' + col.x)
