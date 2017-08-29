@@ -5,7 +5,8 @@ import numpy as np
 import seaborn as sns; sns.set()
 
 os.chdir('logs')
-twrite(col.y + '\nPlease enter a year and week to be graphed [YYYY WW]: ' + col.x)
+twrite(col.y + \
+'\nPlease enter a year and week to be graphed [YYYY WW]: ' + col.x)
 
 while True:
     try:
@@ -29,7 +30,8 @@ while True:
 
     except (ValueError, IOError):
         twrite(col.r + \
-        '\nThe specified log was not found. Please retry using [YYYY WW] format: ' + col.x)
+        '\nThe specified log was not found.' + \
+        'Please retry using [YYYY WW] format: ' + col.x)
         continue
 
     else:

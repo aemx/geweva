@@ -1,7 +1,8 @@
 import json
 
 os.chdir('logs')
-twrite(col.y + '\nPlease enter a year and week to inject data [YYYY WW]: ' + col.x)
+twrite(col.y + \
+'\nPlease enter a year and week to inject data [YYYY WW]: ' + col.x)
 
 while True:
     try:
@@ -30,7 +31,8 @@ while True:
         
         except ValueError:
             twrite(col.r + \
-            '\nThe specified log was not found. Please retry using [YYYY WW] format: ' + col.x)
+            '\nThe specified log was not found.' + \
+            'Please retry using [YYYY WW] format: ' + col.x)
             continue
 
         if (1 <= wint <= 53):
@@ -53,7 +55,8 @@ while True:
                     fwp = json.dump({}, open(wstr, 'w'))
                     time.sleep(0.5)
 
-                    twrite(col.g + '\nSuccess! ' + wstr + ' was created.\n' + col.x)
+                    twrite(col.g + \
+                    '\nSuccess! ' + wstr + ' was created.\n' + col.x)
                     break
 
                 elif prompt.lower() in ('no', 'n'):
@@ -69,7 +72,8 @@ while True:
 
         else:
             twrite(col.r + \
-            '\nThe specified log was not found. Please retry using [YYYY WW] format: ' + col.x)
+            '\nThe specified log was not found.' + \
+            'Please retry using [YYYY WW] format: ' + col.x)
             continue
 
     else:

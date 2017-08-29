@@ -19,7 +19,7 @@ def twrite(tspace):
         sys.stdout.write(char)
         sys.stdout.flush()
 
-twrite(col.g + 'Geweva Plotter ' + col.d + '0.1.0-b2\n\n' + col.x)
+twrite(col.g + 'Geweva Plotter ' + col.d + '0.1.0\n\n' + col.x)
 
 header = col.c + 'Please select an operation:\n' + col.x + \
 col.y + '    [0] Graph one month of data\n' + col.x + \
