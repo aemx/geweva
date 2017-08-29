@@ -1,3 +1,6 @@
+import json
+from pprint import pprint
+
 os.chdir('logs')
 twrite(col.y + '\nPlease enter a year and week to inject data [YYYY WW]: ' + col.x)
 
@@ -7,11 +10,11 @@ while True:
         year, week = raw.split(' ')
         def find_file(y, w):
             for files in os.getcwd():
-                glog = y + '-W' + w + 'vals.log'
+                glog = y + '-W' + w + 'vals.json'
                 return glog
         wstr = find_file(year, week)
         os.path.isfile(wstr)
-        f = open(wstr, 'r')
+        f = json.load(open(wstr))
     
     except (ValueError, IOError):
         try:
@@ -40,8 +43,7 @@ while True:
                     time.sleep(0.7)
                     twrite('.\n' + col.x)
 
-                    fwp = open(wstr, 'w+')
-                    fwp.close()
+                    fwp = json.dump({}, open(wstr, 'w'))
                     time.sleep(0.5)
 
                     twrite(col.g + '\nSuccess! ' + wstr + ' was created.\n' + col.x)
@@ -68,9 +70,7 @@ while True:
 
 wstr = find_file(year, week)
 os.path.isfile(wstr)
-fr = open(wstr, 'r')
-alldata = fr.read().splitlines()
-fr.close()
+f = json.load(open(wstr))
 
 twrite(col.y + '\nEnter a numerical time value: ' + col.x)
 
@@ -104,38 +104,32 @@ while True:
     else:
         break
 
-if os.stat(wstr).st_size > 0:
-    xdapd = ''.join(alldata[0]) + '   ' + str(xapflo) + '\n'
-    ydapd = ''.join(alldata[1]) + '   ' + str(yapflo)
-    
-    twrite(col.g + \
-    '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+try:
+    xlist = f['time']
+    xlist.extend([xapflo])
+    f['time'] = xlist
 
-    fw = open(wstr, 'w')
-    fw.truncate()
-    fw.write(xdapd)
-    fw.write(ydapd)
-    fw.close()
+    ylist = f['weight']
+    ylist.extend([yapflo])
+    f['weight'] = ylist
 
-elif os.stat(wstr).st_size == 0:
-    xdapd = str(xapflo) + '\n'
-    ydapd = str(yapflo)
-    
-    twrite(col.g + \
-    '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+except KeyError:
+    f["time"] = [xapflo]
+    f["weight"] = [yapflo]
 
-    fw = open(wstr, 'w')
-    fw.truncate()
-    fw.write(xdapd)
-    fw.write(ydapd)
-    fw.close()
-    time.sleep(1)
-    twrite(col.c + 'Returning to main menu')
-    time.sleep(0.5)
-    twrite('.')
-    time.sleep(0.7)
-    twrite('.')
-    time.sleep(0.7)
-    twrite('.\n' + col.x)
-    time.sleep(1)
+json.dump(f, open(wstr, 'w'))
+
+twrite(col.g + \
+'\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+
+time.sleep(1)
+twrite(col.c + 'Returning to main menu')
+time.sleep(0.5)
+twrite('.')
+time.sleep(0.7)
+twrite('.')
+time.sleep(0.7)
+twrite('.\n' + col.x)
+time.sleep(1)
+
 os.chdir('..')

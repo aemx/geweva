@@ -2,7 +2,6 @@ import json
 import matplotlib.dates as mcal
 import matplotlib.pyplot as plt
 import numpy as np
-from pprint import pprint as pp
 import seaborn as sns; sns.set()
 
 os.chdir('logs')
