@@ -1,6 +1,8 @@
+import json
 import matplotlib.dates as mcal
 import matplotlib.pyplot as plt
 import numpy as np
+from pprint import pprint as pp
 import seaborn as sns; sns.set()
 
 os.chdir('logs')
@@ -12,11 +14,11 @@ while True:
         year, week = raw.split(' ')
         def find_file(y, w):
             for files in os.getcwd():
-                glog = y + '-W' + w + 'vals.log'
+                glog = y + '-W' + w + 'vals.json'
                 return glog
         wstr = find_file(year, week)
         os.path.isfile(wstr)
-        f = open(wstr, 'r')
+        f = json.load(open(wstr))
 
     except (ValueError, IOError):
         twrite(col.r + \
@@ -26,12 +28,10 @@ while True:
     else:
         break
 
-alldata = f.read().splitlines()
-f.close()
 os.chdir('..')
 
-xdata = np.array(alldata[0].split('  '), dtype=float)
-ydata = np.array(alldata[1].split('  '), dtype=float)
+xdata = np.array(f['time'], dtype=float)
+ydata = np.array(f['weight'], dtype=float)
 
 if len(ydata) < 2:
     twrite(col.r + '\nInsufficient information for graphing.' + \
