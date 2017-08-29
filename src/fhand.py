@@ -1,72 +1,87 @@
-twrite(col.y + '\nPlease enter a month to inject data: ' + col.x)
+import json
+
+os.chdir('logs')
+twrite(col.y + \
+'\nPlease enter a year and week to inject data [YYYY WW]: ' + col.x)
 
 while True:
     try:
-        mint = int(input())
-        def find_file(name):
+        raw = input()
+        rawyear, rawweek = raw.split(' ')
+        truyear, truweek = rawyear.lstrip('0'), rawweek.lstrip('0')
+
+        if len(truweek) == 1:
+            revweek = '0' + truweek
+
+        else:
+            revweek = truweek
+
+        def find_file(y, w):
             for files in os.getcwd():
-                glog = str(name) + 'vals.log'
-                return str(name)
-
-    except ValueError:
-        twrite(col.r + '\nInput was not an integer. Please retry: ' + col.x)
-        continue
-
-    if not (1 <= mint <= 12):
-        twrite(col.r + \
-        '\nInput was not a valid integer. Please retry: ' + col.x)
-        continue
+                glog = y + '-W' + w + 'vals.json'
+                return glog
+        wstr = find_file(truyear, revweek)
+        os.path.isfile(wstr)
+        f = json.load(open(wstr))
     
-    try:
-        mstr = find_file(mint)
-        fto = mstr + 'vals.log'
-        os.path.isfile(fto)
-        fr = open(fto, 'r')
+    except (ValueError, IOError):
+        try:
+            yint = int(truyear)
+            wint = int(truweek)
+        
+        except ValueError:
+            twrite(col.r + \
+            '\nThe specified log was not found.' + \
+            'Please retry using [YYYY WW] format: ' + col.x)
+            continue
 
-    except IOError:
-        twrite(col.y + '\nThe specified Geweva log was not found.\n' + col.x)
-        while True:
-            month = cal.month_name[mint]
-            twrite(col.c + \
-            'Would you like to create a new log for the month of ' + \
-            month + '? [Y/n] ' + col.x)
-            prompt = input()
+        if (1 <= wint <= 53):
+            twrite(col.y + '\nThe specified log was not found.\n' + col.x)
+            while True:
+                twrite(col.c + \
+                'Would you like to create a new log for week ' + \
+                truweek + ', ' + truyear + ' ? [Y/n] ' + col.x)
+                prompt = input()
 
-            if prompt.lower() in ('yes', 'ye', 'y', ''):
-                twrite(col.c + '\nCreating new file')
-                time.sleep(0.5)
-                twrite('.')
-                time.sleep(0.7)
-                twrite('.')
-                time.sleep(0.7)
-                twrite('.\n' + col.x)
+                if prompt.lower() in ('yes', 'ye', 'y', ''):
+                    twrite(col.c + '\nCreating new file')
+                    time.sleep(0.5)
+                    twrite('.')
+                    time.sleep(0.7)
+                    twrite('.')
+                    time.sleep(0.7)
+                    twrite('.\n' + col.x)
 
-                fwp = open(fto, 'w+')
-                fwp.close()
-                time.sleep(0.5)
+                    fwp = json.dump({}, open(wstr, 'w'))
+                    time.sleep(0.5)
 
-                twrite(col.g + '\nSuccess! ' + fto + ' was created.\n' + col.x)
-                break
+                    twrite(col.g + \
+                    '\nSuccess! ' + wstr + ' was created.\n' + col.x)
+                    break
 
-            elif prompt.lower() in ('no', 'n'):
-                twrite(col.r + '\nExiting...\n\n' + col.x)
-                sys.exit()
-            
-            else:
-                twrite(col.r + \
-                '\nPlease respond with "yes/y" or "no/n".\n\n' + col.x)
-                continue
-        break
+                elif prompt.lower() in ('no', 'n'):
+                    twrite(col.r + '\nExiting...\n\n' + col.x)
+                    sys.exit()
+
+                else:
+                    twrite(col.r + \
+                    '\nPlease respond with "yes/y" or "no/n".\n\n' + col.x)
+                    continue
+
+            break
+
+        else:
+            twrite(col.r + \
+            '\nThe specified log was not found.' + \
+            'Please retry using [YYYY WW] format: ' + col.x)
+            continue
 
     else:
         break
 
-mstr = find_file(mint)
-fto = mstr + 'vals.log'
-os.path.isfile(fto)
-fr = open(fto, 'r')
-alldata = fr.read().splitlines()
-fr.close()
+wstr = find_file(truyear, revweek)
+os.path.isfile(wstr)
+f = json.load(open(wstr))
 
 twrite(col.y + '\nEnter a numerical time value: ' + col.x)
 
@@ -100,28 +115,32 @@ while True:
     else:
         break
 
-if os.stat(fto).st_size > 0:
-    xdapd = ''.join(alldata[0]) + '   ' + str(xapflo) + '\n'
-    ydapd = ''.join(alldata[1]) + '   ' + str(yapflo)
-    
-    twrite(col.g + \
-    '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+try:
+    xlist = f['time']
+    xlist.extend([xapflo])
+    f['time'] = xlist
 
-    fw = open(fto, 'w')
-    fw.truncate()
-    fw.write(xdapd)
-    fw.write(ydapd)
-    fw.close()
+    ylist = f['weight']
+    ylist.extend([yapflo])
+    f['weight'] = ylist
 
-elif os.stat(fto).st_size == 0:
-    xdapd = str(xapflo) + '\n'
-    ydapd = str(yapflo)
-    
-    twrite(col.g + \
-    '\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+except KeyError:
+    f["time"] = [xapflo]
+    f["weight"] = [yapflo]
 
-    fw = open(fto, 'w')
-    fw.truncate()
-    fw.write(xdapd)
-    fw.write(ydapd)
-    fw.close()
+json.dump(f, open(wstr, 'w'))
+
+twrite(col.g + \
+'\nInput (' + str(xapflo) + ', ' + str(yapflo) + ') accepted.\n\n' + col.x)
+
+time.sleep(1)
+twrite(col.c + 'Returning to main menu')
+time.sleep(0.5)
+twrite('.')
+time.sleep(0.7)
+twrite('.')
+time.sleep(0.7)
+twrite('.\n' + col.x)
+time.sleep(1)
+
+os.chdir('..')
