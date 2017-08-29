@@ -6,19 +6,27 @@ twrite(col.y + '\nPlease enter a year and week to inject data [YYYY WW]: ' + col
 while True:
     try:
         raw = input()
-        year, week = raw.split(' ')
+        rawyear, rawweek = raw.split(' ')
+        truyear, truweek = rawyear.lstrip('0'), rawweek.lstrip('0')
+
+        if len(truweek) == 1:
+            revweek = '0' + truweek
+
+        else:
+            revweek = truweek
+
         def find_file(y, w):
             for files in os.getcwd():
                 glog = y + '-W' + w + 'vals.json'
                 return glog
-        wstr = find_file(year, week)
+        wstr = find_file(truyear, revweek)
         os.path.isfile(wstr)
         f = json.load(open(wstr))
     
     except (ValueError, IOError):
         try:
-            yint = int(year)
-            wint = int(week)
+            yint = int(truyear)
+            wint = int(truweek)
         
         except ValueError:
             twrite(col.r + \
@@ -30,7 +38,7 @@ while True:
             while True:
                 twrite(col.c + \
                 'Would you like to create a new log for week ' + \
-                week + ' of ' + year + ' ? [Y/n] ' + col.x)
+                truweek + ', ' + truyear + ' ? [Y/n] ' + col.x)
                 prompt = input()
 
                 if prompt.lower() in ('yes', 'ye', 'y', ''):
@@ -67,7 +75,7 @@ while True:
     else:
         break
 
-wstr = find_file(year, week)
+wstr = find_file(truyear, revweek)
 os.path.isfile(wstr)
 f = json.load(open(wstr))
 
